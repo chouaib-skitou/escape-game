@@ -1,1 +1,9 @@
+test develop
+
 Video Trans : https://github.com/Simsso/Arduino-Wireless-Module-Multiple-Receivers
+
+
+//receive data over Ethernet & WIFI
+https://developer.toradex.com/windows-ce/knowledge-base/how-to-send-and-receive-data-over-ethernet/
+https://docs.opencv.org/3.0.0/d9/df8/tutorial_root.html
+
