@@ -3,7 +3,7 @@
 
 
     Le but de ce projet est de développer les bases d’un jeu d’escape-game, à savoir le poste
-de contrôle du maître du jeu, et un certain nombre de « détecteurs » et d’actuateurs
+ de contrôle du maître du jeu, et un certain nombre de « détecteurs » et d’actuateurs
 pour les différentes énigmes, partageant une interface de branchement et un protocole
 de communication communs de manière à pouvoir facilement échanger ou rajouter des
 modules
