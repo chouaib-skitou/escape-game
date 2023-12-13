@@ -104,20 +104,36 @@ def check_config():
 def handle_intent(intent_data):
     return make_request(HA_URL, TOKEN, "/api/intent/handle", method='POST', data=intent_data)
 
+def update_input_text(data):
+    return make_request(HA_URL, TOKEN, "/api/services/input_text/set_value", method='POST', data=data)
+
+data = {
+        "entity_id": "input_text.send_text",
+        "value": "New 2"
+    }
+update_result = update_input_text(data)
+
+print("Update Result:", update_result)
 
 
-states = get_states()
-esphome_states = get_state_by_entity_id('update.esphome_update')
+
+# states = get_states()
+# esphome_states = get_state_by_entity_id('update.esphome_update')
 
 
-print('\n\nESPHome -------------------------------------------\n\n')
-print(esphome_states)
+# print('\n\nESPHome -------------------------------------------\n\n')
+# print(esphome_states)
 
 
-print('\n\nAll states -------------------------------------------\n\n')
-if states is not None:
-    for state in states:
-        print(state) 
-else:
-    print("Failed to retrieve states.")
+# print('\n\nAll states -------------------------------------------\n\n')
+# if states is not None:
+#     for state in states:
+#         print(state) 
+# else:
+#     print("Failed to retrieve states.")
+
+# DATA = {
+#     "entity_id": "input_text.send_text",
+# #     "value": "New Content"
+# }
 
