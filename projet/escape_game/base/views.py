@@ -1,22 +1,106 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 import requests
 
-def action_led(request, etat):
-    ESP32_IP = '192.168.1.195'
-    if etat == 'on':
-        requests.get(f'http://{ESP32_IP}/ledon')
-        request.session['led_state'] = 'allumée'  # Stocker l'état dans la session
-    elif etat == 'off':
-        requests.get(f'http://{ESP32_IP}/ledoff')
-        request.session['led_state'] = 'éteinte'  # Stocker l'état dans la session
-    return redirect('base:home')
+from django.http import JsonResponse
+from .models import Device
+from django.contrib import messages
+
+@csrf_exempt
+def update_device_ip(request):
+    if request.method == 'POST':
+        ip_address = request.POST.get('ip')
+        # Update or create the device record with the new IP
+        device, created = Device.objects.update_or_create(
+            id=1, defaults={'ip_address': ip_address}
+        )
+        
+        # Try to reach the ESP32 to check connectivity
+        try:
+            # Assume you have a '/ping' endpoint that just needs a simple GET request
+            response = requests.get(f'http://{ip_address}/ping', timeout=5)  # 5-second timeout for the request
+            
+            if response.status_code == 200:
+                connection_status = 'connected'
+            else:
+                connection_status = 'error'
+        except requests.ConnectionError:
+            connection_status = 'disconnected'
+        except requests.Timeout:
+            connection_status = 'timeout'
+        except Exception as e:
+            connection_status = f'failed: {str(e)}'
+
+        # Return the IP address and connection status in the response
+        return JsonResponse({
+            'status': 'success',
+            'ip': ip_address,
+            'connection_status': connection_status
+        })
+
+    return JsonResponse({'status': 'error'}, status=400)
+
+@csrf_exempt
+def control_sensor(request, sensor_number):
+    try:
+        device = Device.objects.get(id=1)  # Assuming there is only one device
+        ESP32_IP = device.ip_address
+        url = f'http://{ESP32_IP}/status/sensor_{sensor_number}'
+
+        response = requests.get(url)
+        if response.status_code == 200:
+            sensor_data = response.json()
+            sensor_status = sensor_data['status']
+            request.session[f'sensor_{sensor_number}_status'] = sensor_status
+            print(sensor_status)
+            return JsonResponse({'status': 'success', 'sensor_status': sensor_status})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Device not responding'}, status=500)
+    except requests.RequestException as e:
+        request.session['connection_status'] = 'disconnected'
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+  
+@csrf_exempt
+def control_door(request, door_number, action):
+    try:
+        device = Device.objects.get(id=1)  # Assuming there is only one device configuration
+        ESP32_IP = device.ip_address
+        url = f'http://{ESP32_IP}/action/door_{door_number}/{action}'
+        request.session['connection_status'] = 'connected'
+
+        response = requests.get(url)
+        if response.status_code == 200:
+            request.session[f'door_{door_number}_status'] = 'ouverte' if action == 'open' else 'fermée'
+            return JsonResponse({'status': 'success', 'message': f'Door {door_number} {action}'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Device not responding'}, status=500)
+    except requests.RequestException as e:
+        request.session['connection_status'] = 'disconnected'
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 @login_required
 def home(request):
- led_state = request.session.get('led_state', 'inconnu')
- return render(request, "home.html", {'led_state': led_state})
+  door_1_status = request.session.get('door_1_status', 'inconnu')
+  door_2_status = request.session.get('door_2_status', 'inconnu')
+  door_3_status = request.session.get('door_3_status', 'inconnu')
+  door_4_status = request.session.get('door_4_status', 'inconnu')
+  sensor_1_status = request.session.get('sensor_1_status', 'inconnu')
+  sensor_2_status = request.session.get('sensor_2_status', 'inconnu')
+  sensor_3_status = request.session.get('sensor_3_status', 'inconnu')
+  sensor_4_status = request.session.get('sensor_4_status', 'inconnu')
+  return render(request, "home.html", {
+      'door_1_status': door_1_status,
+      'door_2_status': door_2_status,
+      'door_3_status': door_3_status,
+      'door_4_status': door_4_status,
+      'sensor_1_status': sensor_1_status,
+      'sensor_2_status': sensor_2_status,
+      'sensor_3_status': sensor_3_status,
+      'sensor_4_status': sensor_4_status,
+      })
 
 
 def authView(request):

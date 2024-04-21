@@ -1,0 +1,22 @@
+
+<div class="row">
+    <h3>Contrôle des portes</h3>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-12 mt-3 p-0">
+        <h5>Porte N° 1 ({{door_1_status}})</h5> 
+        <input class="switch door" type="checkbox" id="doorToggle1" {% if door_1_status == 'ouverte' %}checked{% endif %}>
+    </div>
+    <div class="col-lg-6 col-12 mt-3 p-0">
+        <h5>Porte N° 2 ({{door_2_status}})</h5> 
+        <input class="switch door" type="checkbox" id="doorToggle2" {% if door_2_status == 'ouverte' %}checked{% endif %}>
+    </div>
+    <div class="col-lg-6 col-12 mt-3 p-0">
+        <h5>Porte N° 3 ({{door_3_status}})</h5> 
+        <input class="switch door" type="checkbox" id="doorToggle3" {% if door_3_status == 'ouverte' %}checked{% endif %}>
+    </div>
+    <div class="col-lg-6 col-12 mt-3 p-0">
+        <h5>Porte N° 4 ({{door_4_status}})</h5> 
+        <input class="switch door" type="checkbox" id="doorToggle4" {% if door_4_status == 'ouverte' %}checked{% endif %}>
+    </div>
+</div>
