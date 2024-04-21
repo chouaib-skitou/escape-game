@@ -1,3 +1,21 @@
-test develop
+Video Transmiter : https://github.com/Simsso/Arduino-Wireless-Module-Multiple-Receivers
 
-Video Trans : https://github.com/Simsso/Arduino-Wireless-Module-Multiple-Receivers
+//doc home assitant 
+https://developers.home-assistant.io/docs/api/rest
+
+
+//Receive data over Ethernet & WIFI
+https://developer.toradex.com/windows-ce/knowledge-base/how-to-send-and-receive-data-over-ethernet/
+https://docs.opencv.org/3.0.0/d9/df8/tutorial_root.html
+
+
+//setup
+
+sudo apt update && sudo apt upgrade -y
+sudo apt install python3 python3-pip python3-venv -y
+
+
+mkdir homeassistant
+cd homeassistant
+python3 -m venv .
+source bin/activate
