@@ -1,8 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import requests
+from .forms import ControllerForm
+from .models import Controller
 
 from django.http import JsonResponse
 from .models import Device
@@ -91,6 +94,7 @@ def home(request):
   sensor_2_status = request.session.get('sensor_2_status', 'inconnu')
   sensor_3_status = request.session.get('sensor_3_status', 'inconnu')
   sensor_4_status = request.session.get('sensor_4_status', 'inconnu')
+  controllers = Controller.objects.all()
   return render(request, "home.html", {
       'door_1_status': door_1_status,
       'door_2_status': door_2_status,
@@ -100,8 +104,41 @@ def home(request):
       'sensor_2_status': sensor_2_status,
       'sensor_3_status': sensor_3_status,
       'sensor_4_status': sensor_4_status,
+      'controllers': controllers,
       })
 
+@login_required
+def controller_create(request):
+    if request.method == 'POST':
+        form = ControllerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # return redirect('base:home')
+            return HttpResponseRedirect('/#configuration')
+        else:
+            print(form.errors)
+    else:
+        form = ControllerForm()
+    return render(request, 'components/crud_controller.html', {'form': form})
+
+@login_required
+def controller_delete(request, id):
+    controller = get_object_or_404(Controller, id=id)
+    controller.delete()
+    # return redirect('base:home')
+    return HttpResponseRedirect('/#configuration')
+
+@login_required
+def controller_edit(request, pk):
+    controller = get_object_or_404(Controller, pk=pk)
+    if request.method == 'POST':
+        form = ControllerForm(request.POST, instance=controller)
+        if form.is_valid():
+            form.save()
+            return redirect('base:home')
+    else:
+        form = ControllerForm(instance=controller)
+    return render(request, 'components/crud_controller.html', {'form': form})
 
 def authView(request):
  if request.method == "POST":
