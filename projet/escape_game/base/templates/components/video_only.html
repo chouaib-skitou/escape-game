@@ -24,10 +24,15 @@
         </div>
 
         <body>
-            <video id="videoElement" width="640" height="480" autoplay></video>
-            <button onclick="startStream()">Start Stream</button>
-            <button onclick="stopStream()">Stop Stream</button>
-            <select id="cameraSelect"></select>
+            <div class="video_container">
+                <video id="videoElement" autoplay></video>
+                <div class="row video_btns_container">
+                    <button onclick="startStream()" class="btn btn-success">Start Stream</button>
+                    <button onclick="stopStream()" class="btn btn-danger">Stop Stream</button>
+                    <select id="cameraSelect" class="form-select"></select>
+                </div>
+            </div>
+            
 
             <script>
                 let videoStream;
