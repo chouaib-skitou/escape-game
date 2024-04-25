@@ -112,3 +112,20 @@ def authView(request):
  else:
   form = UserCreationForm()
  return render(request, "registration/signup.html", {"form": form})
+
+
+async def video_stream(websocket, path):
+    while True:
+        # Recevoir les données d'image du client
+        image_data = await websocket.recv()
+
+def video_feed(request):
+    # Démarrez le serveur WebSocket dans un thread séparé
+    start_websocket_server()
+    return HttpResponse("WebSocket server started for video stream.")
+
+def start_websocket_server():
+    # Démarrer le serveur WebSocket
+    start_server = websockets.serve(video_stream, 'localhost', 8000)
+    asyncio.get_event_loop().run_until_complete(start_server)
+    asyncio.get_event_loop().run_forever()
