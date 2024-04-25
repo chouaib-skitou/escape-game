@@ -165,7 +165,8 @@
         <div class="tab-content">
             <div class="tab-pane active" id="dashboard">
                 <div class="row mt-5">
-                    {% include "./components/audio_video.html" %}
+                    {% comment %} {% include "./components/audio_video.html" %} {% endcomment %}
+                    {% include "./components/video_only.html" %}
                     {% include "./components/actions_capteurs.html" %}
                 </div>
             </div>
