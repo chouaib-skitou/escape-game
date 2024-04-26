@@ -76,11 +76,9 @@
                     const constraints = {
                         video: {
                             deviceId: { exact: cameraId },
-                            //exposureCompensation: {ideal: 20},
-                            exposureTime: {ideal: 10 },        
-                            frameRate: {ideal:120},
-                            width:{ideal:1920},      
-                            height:{ideal:1080}   
+                            frameRate: {ideal: 60}, 
+                            width: {ideal: 1920},      
+                            height: {ideal: 1080}
                         }
                     };
                     
@@ -91,7 +89,6 @@
                         .then(function(stream) {
                             video.srcObject = stream;
                             videoStream = stream;
-                            
 
                             // Obtenir la piste vidéo du flux vidéo
                             const videoTrack = stream.getVideoTracks()[0];
@@ -104,7 +101,7 @@
                                 
                                 const capabilities = videoTrack.getCapabilities();
                                 videoTrack.applyConstraints({
-                                    advanced: [{exposureTime: 20}, {brightness: 120}, { focusDistance: 100 }, { focusMode: 'manual' }, {frameRate: 24}]
+                                    advanced: [{brightness: 100}, {colorTemperature: 5500}, {contrast: 30}, {saturation : 30}, {sharpness : 10}]
                                 })
                                 .then(() => {
                                     console.log('Focus mode and distance applied successfully.');
