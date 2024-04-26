@@ -72,14 +72,19 @@
                     const video = document.getElementById('videoElement');
                     
                     // Spécifier la caméra sélectionnée dans les contraintes
-                    /*
+                    
                     const constraints = {
                         video: {
-                            deviceId: { exact: cameraId }                      
+                            deviceId: { exact: cameraId },
+                            //exposureCompensation: {ideal: 20},
+                            exposureTime: {ideal: 10 },        
+                            frameRate: {ideal:120},
+                            width:{ideal:1920},      
+                            height:{ideal:1080}   
                         }
                     };
-                    */
-                    const constraints = { video: true };
+                    
+                    // const constraints = { video: true };
 
                     // Demander l'accès à la caméra avec les contraintes spécifiées
                     navigator.mediaDevices.getUserMedia(constraints)
@@ -99,7 +104,7 @@
                                 
                                 const capabilities = videoTrack.getCapabilities();
                                 videoTrack.applyConstraints({
-                                    advanced: [{ focusDistance: 100 }, { focusMode: 'manual' }]
+                                    advanced: [{exposureTime: 20}, {brightness: 120}, { focusDistance: 100 }, { focusMode: 'manual' }, {frameRate: 24}]
                                 })
                                 .then(() => {
                                     console.log('Focus mode and distance applied successfully.');
