@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV=$(cygpath "C:/Users/pc_su/Desktop/Projet APP4/User-Authentication-and-User-Signup-in-Python-using-Django-/venv")
+VIRTUAL_ENV=$(cygpath "C:/Users/pc_su/Desktop/Polytech Paris-Saclay/APP4/Projet Coopératif/escape-game/projet/venv")
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

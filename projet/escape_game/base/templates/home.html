@@ -86,28 +86,39 @@
         </script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
-        $(document).ready(function() {
-            // Handle tab clicks
-            $(".nav-tabs a").click(function() {
-                $(this).tab('show');  // Bootstrap's tab show method
-                $(".nav-tabs li").removeClass('active');  // Remove active from all tabs
-                $(this).parent('li').addClass('active');  // Add active to the clicked tab's parent
+            $(document).ready(function() {
+                // Check if the URL hash value corresponds to a tab and show it
+                var hash = window.location.hash;
+                if (hash) {
+                    $('.nav-tabs a[href="' + hash + '"]').tab('show');  // Show the tab corresponding to the hash
+                }
+            
+                // Handle tab clicks
+                $(".nav-tabs a").click(function(e) {
+                    e.preventDefault();
+                    $(this).tab('show');  // Bootstrap's tab show method
+                    $(".nav-tabs li").removeClass('active');  // Remove active from all tabs
+                    $(this).parent('li').addClass('active');  // Add active to the clicked tab's parent
+                    window.location.hash = this.hash;  // Optional: Update the URL hash
+                });
+            
+                // Ensure correct tab pane is displayed when a tab is clicked
+                $('.nav-tabs a').on('shown.bs.tab', function(event) {
+                    var x = $(event.target).attr("href");  // Active tab
+                    $(x).addClass('active').siblings().removeClass('active');
+                });
             });
-
-            // This code ensures the correct tab pane is displayed when a tab is clicked.
-            $('.nav-tabs a').on('shown.bs.tab', function(event){
-                var x = $(event.target).attr("href");  // active tab
-                $(x).addClass('active').siblings().removeClass('active');
+            
+            // If using Bootstrap's navigation for tabs (which it looks like you are),
+            // you might need to explicitly handle hash changes for browser forward/back navigation
+            $(window).on('hashchange', function() {
+                var newHash = window.location.hash;
+                if (newHash) {
+                    $('.nav-tabs a[href="' + newHash + '"]').tab('show');
+                }
             });
-        });
-        </script>
-        <script>
-        $(document).ready(function() {
-            $('.switch.sensor-status').click(function(event) {
-                event.preventDefault();
-            });
-        });
-        </script>
+            </script>
+            
         
         
 
@@ -148,18 +159,19 @@
         </div>
 
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab1" data-toggle="tab">Dashboard</a></li>
-            <li><a href="#tab2" data-toggle="tab">Configuration</a></li>
+            <li class="active"><a href="#dashboard" data-toggle="tab">Dashboard</a></li>
+            <li><a href="#configuration" data-toggle="tab">Configuration</a></li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane active" id="tab1">
+            <div class="tab-pane active" id="dashboard">
                 <div class="row mt-5">
-                    {% include "./components/audio_video.html" %}
+                    {% comment %} {% include "./components/audio_video.html" %} {% endcomment %}
+                    {% include "./components/video_only.html" %}
                     {% include "./components/actions_capteurs.html" %}
                 </div>
             </div>
-            <div class="tab-pane" id="tab2">
-                config forms
+            <div class="tab-pane" id="configuration">
+                {% include "./components/crud_controller.html" %}
             </div>
         </div>
     </div>

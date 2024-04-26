@@ -3,9 +3,14 @@
 #include <HTTPClient.h>
 
 // Network credentials
-const char* ssid = "Freebox-chouaib";
-const char* password = "HamzaSkitou@2811@1992";
-const char* djangoURL = "http://192.168.1.30:8000/api/update_ip";
+// const char* ssid = "Freebox-chouaib";
+// const char* password = "HamzaSkitou@2811@1992";
+// const char* djangoURL = "http://192.168.1.30:8000/api/update_ip";
+
+// Network credentials
+const char* ssid = "chouaib";
+const char* password = "chouaib2021";
+const char* djangoURL = "http://172.20.10.2:8000/api/update_ip";
 
 // Create a web server object that listens for HTTP request on port 80
 WebServer server(80);
@@ -38,7 +43,7 @@ void handleSensorStatus(int sensor_number) {
 }
 
 
-void handleLEDControl(int door, bool open) {
+void handleActionControl(int door, bool open) {
   if (open) {
     switch (door) {
       case 1:
@@ -65,7 +70,7 @@ void handleLEDControl(int door, bool open) {
     flashCount = 0; // Reset flash counter
   } else {
     turnLEDOff();
-    flashLimit = 0; // Stop flashing
+    flashLimit = 0; 
   }
   server.send(200, "text/plain", "Door " + String(door) + (open ? " opened." : " closed."));
 }
@@ -89,14 +94,14 @@ void setup() {
   http.end();
 
   server.on("/", handleRoot);
-  server.on("/action/door_1/open", []() { handleLEDControl(1, true); });
-  server.on("/action/door_1/close", []() { handleLEDControl(1, false); });
-  server.on("/action/door_2/open", []() { handleLEDControl(2, true); });
-  server.on("/action/door_2/close", []() { handleLEDControl(2, false); });
-  server.on("/action/door_3/open", []() { handleLEDControl(3, true); });
-  server.on("/action/door_3/close", []() { handleLEDControl(3, false); });
-  server.on("/action/door_4/open", []() { handleLEDControl(4, true); });
-  server.on("/action/door_4/close", []() { handleLEDControl(4, false); });
+  server.on("/action/door_1/open", []() { handleActionControl(1, true); });
+  server.on("/action/door_1/close", []() { handleActionControl(1, false); });
+  server.on("/action/door_2/open", []() { handleActionControl(2, true); });
+  server.on("/action/door_2/close", []() { handleActionControl(2, false); });
+  server.on("/action/door_3/open", []() { handleActionControl(3, true); });
+  server.on("/action/door_3/close", []() { handleActionControl(3, false); });
+  server.on("/action/door_4/open", []() { handleActionControl(4, true); });
+  server.on("/action/door_4/close", []() { handleActionControl(4, false); });
 
   server.on("/status/sensor_1", []() { handleSensorStatus(1); });
   server.on("/status/sensor_2", []() { handleSensorStatus(2); });
@@ -128,91 +133,6 @@ void loop() {
 }
 
 
-
-
-// void setup() {
-//   pinMode(LED_BUILTIN, OUTPUT);
-//   digitalWrite(LED_BUILTIN, LOW); // Assurez-vous que la LED est éteinte au démarrage
-  
-//   WiFi.begin(ssid, password);
-//   while (WiFi.status() != WL_CONNECTED) {
-//     delay(1000);
-//   }
-
-//   server.on("/", handleRoot);
-//   server.on("/ledon", handleLEDOn);
-//   server.on("/ledoff", handleLEDOff);
-
-//   server.begin();
-// }
-
-// void loop() {
-//   server.handleClient();
-// }
-
-
-// #include <WiFi.h>
-// #include <WebServer.h>
-
-// const char* ssid = "...";
-// const char* password = "chouaib2021";
-
-// // const char* ssid = "Freebox-chouaib";
-// // const char* password = "HamzaSkitou@2811@1992";
-// #define BUTTON_PIN 0
-// void setup() {
-//   // Initialiser la LED intégrée comme une sortie
-//   pinMode(LED_BUILTIN, OUTPUT);
-//   pinMode(BUTTON_PIN, INPUT_PULLUP); 
-  
-//   // Démarrer la communication série à 115200 bauds
-//   Serial.begin(115200);
-// }
-
-// void loop() {
-//   static bool lastButtonState = HIGH; // Stocke l'état précédent du bouton
-//   bool currentButtonState = digitalRead(BUTTON_PIN); // Lire l'état actuel du bouton
-
-//   // Vérifier si des données sont disponibles sur le port série
-//   if (Serial.available() > 0) {
-//     // Lire la commande jusqu'à ce qu'un saut de ligne (\n) soit détecté
-//     String command = Serial.readStringUntil('\n');
-    
-//     // Supprimer les espaces blancs ou les caractères de nouvelle ligne en excès
-//     command.trim();
-    
-//     // Comparer la commande reçue et agir en conséquence
-//     if (command == "LED_ON") {
-//       // Allumer la LED intégrée
-//       digitalWrite(LED_BUILTIN, HIGH);
-//       Serial.println("LED is ON");
-//     } else if (command == "LED_OFF") {
-//       // Éteindre la LED intégrée
-//       digitalWrite(LED_BUILTIN, LOW);
-//       Serial.println("LED is OFF");
-//     } else if (command == "SENSOR_STATE") {
-//       Serial.println("SENSOR_TRUE");
-//     } else if (command == "BTN_STATE") {
-//       // Vérifie si l'état du bouton a changé
-//       if (currentButtonState != lastButtonState) {
-//         // Mettre à jour l'état précédent avec l'état actuel
-//         lastButtonState = currentButtonState;
-        
-//         // Vérifier si le bouton est pressé
-//         if (currentButtonState == LOW) {
-//           Serial.println("Button Pressed");
-//         } else {
-//           Serial.println("Button Released");
-//         }
-//       }
-//     } else {
-//       // Envoyer un message d'erreur si la commande est inconnue
-//       Serial.println("Unknown command");
-//     }
-//   }
-
-  
-// }
 
 
 // void setup() {

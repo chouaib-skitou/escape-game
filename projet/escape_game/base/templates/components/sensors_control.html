@@ -5,18 +5,18 @@
 <div class="row">
     <div class="col-lg-6 col-12 mt-3 p-0">
         <h5>Capteur N° 1 ({{sensor_1_status}})</h5> 
-        <input class="switch sensor-status" type="checkbox"  {% if sensor_1_status == 'activated' %}checked{% endif %}>
+        <input class="switch sensor-status" type="checkbox"  {% if sensor_1_status == 'activated' %}checked{% endif %} disabled>
     </div>
-    <div class="col-lg-6 col-12 mt-3 p-0">
+    <!--<div class="col-lg-6 col-12 mt-3 p-0">
         <h5>Capteur N° 2 ({{sensor_2_status}})</h5> 
-        <input class="switch sensor-status" type="checkbox"  {% if sensor_2_status == 'activated' %}checked{% endif %}>
+        <input class="switch sensor-status" type="checkbox"  {% if sensor_2_status == 'activated' %}checked{% endif %} disabled>
+    </div>-->
+    <div class="col-lg-6 col-12 mt-3 p-0">
+        <h5>Capteur N° 2 ({{sensor_3_status}})</h5> 
+        <input class="switch sensor-status" type="checkbox"  {% if sensor_3_status == 'activated' %}checked{% endif %} disabled>
     </div>
     <div class="col-lg-6 col-12 mt-3 p-0">
-        <h5>Capteur N° 3 ({{sensor_3_status}})</h5> 
-        <input class="switch sensor-status" type="checkbox"  {% if sensor_3_status == 'activated' %}checked{% endif %}>
-    </div>
-    <div class="col-lg-6 col-12 mt-3 p-0">
-        <h5>Capteur N° 4 ({{sensor_4_status}})</h5> 
-        <input class="switch sensor-status" type="checkbox" {% if sensor_4_status == 'activated' %}checked{% endif %}>
+        <h5>Capteur N° 3 ({{sensor_4_status}})</h5> 
+        <input class="switch sensor-status" type="checkbox" {% if sensor_4_status == 'activated' %}checked{% endif %} disabled>
     </div>
 </div>
